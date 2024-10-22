@@ -1,0 +1,30 @@
+<div class="hamburger-btn" (click)="toggleSidebar()" [ngClass]="isSidebarOpen ? 'open' : 'close'"></div>
+
+<!-- Sidebar -->
+<div class="side-container" [ngClass]="{'visible': isSidebarOpen}">
+  <div class="side-itens">
+    <div id="sbt-analytics" class="sideBtn flex" (click)="goToRoute('/dashboard/analytics')">
+      <img src="../../assets/img/analytics.png" alt="">
+      <p>Analytics</p>
+    </div>
+    <div id="sbt-settings" class="sideBtn flex" (click)="goToRoute('/dashboard/settings')">
+      <img src="../../assets/img/settings.png" alt="">
+      <p>Configurações</p>
+    </div>
+    <div id="sbt-plans" class="sideBtn flex" (click)="goToRoute('/dashboard/plans')">
+      <img src="../../assets/img/card.png" alt="">
+      <p>Planos</p>
+    </div>
+    <div id="sbt-chat" class="sideBtn flex" (click)="goToRoute('/chat')">
+      <i class="pi pi-comments"></i>
+      <p>Chat</p>
+    </div>
+  </div>
+  <div class="toast-container"></div>
+  <div id="sbt-chat" class="sideBtn flex-logout displays" (click)="logout()">
+    <i class="pi pi-sign-out"></i>
+        <p>Log out</p>
+  </div> <!-- Contêiner para notificações -->
+</div>
+
+<div class="overlay" *ngIf="isSidebarOpen" (click)="toggleSidebar()"></div>

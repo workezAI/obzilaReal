@@ -1,0 +1,16 @@
+<div class="nav">
+  <div class="nav-itens">
+    <img
+      id="navLogo"
+      src="../../../assets/img/Navbar Brand.png"
+      alt=""
+      style="cursor: pointer"
+      (click)="goToRoute('/chat')"
+    />
+
+    <div class="plans">
+      <img (click)="goToDash()" id="navSettings" src="../../assets/img/Vector.png" alt="" />
+      <button (click)="logout()">Log out</button>
+    </div>
+  </div>
+</div>

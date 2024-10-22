@@ -1,0 +1,66 @@
+.nav{
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 64px;
+  z-index: 10;
+  user-select: none;
+}
+
+.nav-itens{
+  width: 100%;
+  padding: 0px 30px;
+  box-sizing: content-box;
+  display: flex;
+  justify-content: space-between;
+}
+
+#navLogo{
+  width: 48px;
+}
+
+.plans{
+
+  display: flex;
+  color: white;
+  gap: 25px;
+  align-items: center;
+  justify-self: center;
+  font-weight: 500;
+  button{
+    color:black;
+
+    border-radius: 7px;
+    padding: 7px 20px;
+    font-weight: 500;
+    border: 0px;
+    font-size: 12px;
+    cursor: pointer;
+
+  }
+  img{
+    cursor: pointer;
+  }
+}
+
+#navSettings{
+  width: 18px;
+}
+
+@media (max-width: 1200px) {
+  .dashboard-route .plans {
+    display: none;
+  }
+}
+
+
+@media screen and (max-width: 868px){
+  .nav-itens{
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .nav{
+    height: 100px;
+  }
+}

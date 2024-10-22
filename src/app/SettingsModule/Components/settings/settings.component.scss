@@ -1,0 +1,131 @@
+* {}
+
+.wkz-dash {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  height: 100%;
+}
+
+
+.container-right {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 0, 0);
+  border-top: 1px solid #161C3D;
+  display: flex;
+  align-items: center;
+  padding: 64px 30px;
+
+  flex-direction: column;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+
+.pw-group .pw-holder {
+  display: flex;
+  align-items: center;
+}
+
+#reset-pw {
+  display: none;
+}
+
+.pw-group *ngIf {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+
+.toggle-group {
+  display: flex;
+  height: auto;
+  flex-direction: column;
+  color: #BBBB;
+
+  .toggle-holder {
+    display: flex;
+
+  }
+
+  .toggle-change {
+    display: none;
+    gap: 6px;
+    flex-direction: column;
+  }
+
+  span {
+    margin-left: 12px;
+    font-size: 14px;
+    color: #4781ff;
+    cursor: pointer;
+  }
+}
+
+.container-settings {
+  width: 340px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 17px;
+
+  p {
+    margin: 0px !important;
+  }
+
+  input {
+    background-color: black;
+    border: 1px solid #545454;
+    height: 40px;
+    border-radius: 10px;
+    color: white;
+    padding-left: 8px;
+  }
+
+}
+
+button {
+  margin-top: 10px;
+  width: 100%;
+  color: black;
+  height: 40px;
+  border-radius: 10px;
+  font-weight: 500;
+  border: 0px;
+  cursor: pointer;
+  background-color: white;
+  font-size: 14px;
+}
+
+@media screen and (max-width: 868px) {
+  .container-settings {
+    margin-top: 30px;
+    width: 90%;
+  }
+
+  button {
+    font-size: 12px;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column !important;
+  }
+
+  .container-right {
+    justify-content: start;
+
+  }
+}

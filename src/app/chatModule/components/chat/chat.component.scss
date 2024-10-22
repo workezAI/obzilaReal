@@ -1,0 +1,169 @@
+/* Estilo geral */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif !important;
+}
+
+body {
+  background-color: #000;
+  color: #fff;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Estilo da área de chat */
+.container {
+  flex: 1;
+  justify-content: center;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #000;
+}
+
+.chat-area {
+  display: none;
+  flex-direction: column;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  flex: 1;
+  padding: 30px;
+  scroll-behavior: smooth;
+}
+
+/* Mensagem de boas-vindas */
+.message-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  color: #ccc;
+  font-size: 1.25rem;
+  opacity: 0.7;
+}
+
+.mascote {
+  width: 44px;
+  height: 44px;
+  margin-bottom: 1rem;
+}
+
+/* Mensagem do usuário e resposta do bot */
+.user-message{
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.bot-response {
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  overflow-y: auto;
+  flex: 1;
+  border: 1px solid #394AA3;
+  padding: 20px 20px 20px 30px;
+  border-radius: 21px 21px 0 0;
+}
+
+.user-message .text,
+.bot-response .text {
+  background-color: #252525;
+  line-height: 25px;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  max-width: 70%;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+/* Estilo do input fixo ao final */
+.input-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    position: relative;
+    width: 100%;
+}
+
+.input-container {
+  width: 96%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: #333;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+textarea {
+  flex: 1;
+  background-color: transparent;
+  border: none;
+  color: white;
+  outline: none;
+  font-size: 16px;
+  padding: 0 10px;
+  resize: none;
+  overflow-y: auto;
+  max-height: 140px;
+}
+
+/* Scrollbar personalizada */
+textarea::-webkit-scrollbar,
+.chat-area::-webkit-scrollbar {
+  width: 8px;
+}
+
+textarea::-webkit-scrollbar-thumb,
+.chat-area::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+/* Loader animation with three dots pulsing */
+/* Loader animation with three dots pulsing */
+/* Loader animation with three dots pulsing */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dot {
+  color: white;
+  width: 8px;
+  height: 8px;
+  background-color: #888;
+  border-radius: 50%;
+  margin: 0 3px;
+  animation: bounce 0.6s infinite alternate;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  to {
+    opacity: 0.3;
+    transform: translateY(-10px); /* Pulo mais visível */
+  }
+}
+.imgs{
+  width: 40px;
+  height: 40px;
+}

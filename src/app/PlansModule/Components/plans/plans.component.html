@@ -1,0 +1,115 @@
+<section>
+
+  <app-navbar></app-navbar>
+  <div class="container">
+    <div class="sidebar">
+      <app-sidebar></app-sidebar>
+    </div>
+    <div *ngIf="isLoading" class="loading-spinner">
+      <p-progressSpinner></p-progressSpinner>
+    </div>
+    <div *ngIf="!isLoading " class="container-right">
+      <div class="planos">
+        <h3 style="font-weight: 600; font-size: 18px; color: white;">Planos</h3>
+        <div class="flex-plans">
+          <div class="container-planos">
+            <div class="container-planos-text">
+              <div class="planos-maininfo">
+                <h2>Basic</h2>
+                <p>Tudo o que você precisa para começar com uma IA poderosa e sem censura.</p>
+              </div>
+              <div class="plans-featbenf">
+                <div class="icon-flex">
+                  <img src="../../../../assets/icons/Vector (4).png" alt="">
+                  <p>Interações 100% anônimas</p>
+                </div>
+                <div class="icon-flex">
+                  <img src="../../../../assets/icons/Vector (5).png" alt="">
+                  <p>Respostas poderosas sem censura</p>
+                </div>
+                <div class="icon-flex">
+                  <img src="../../../../assets/icons/Vector (6).png" alt="">
+                  <p>5 prompts / dia</p>
+                </div>
+              </div>
+            </div>
+            <div class="value">
+              <div class="value-flex">
+                <p>R$ <strong class="size">39,90</strong></p>
+                <p>mensalmente</p>
+              </div>
+              <button class="plansSubscribe pSub-white"  *ngIf="userPlan === ''" (click)="redirectToCheckout('basic')">Assinar</button>
+
+              <button class="plansSubscribe pSub-white"  *ngIf="userPlan === 'basic'">Plano atual</button>
+        </div>
+          </div>
+          <div class="container-planos planoDestaque">
+            <div class="container-planos-text">
+              <div class="planos-maininfo">
+                <h2>Gold</h2>
+                <p>Ideal para usuários frequentes que precisam de mais dados e flexibilidade.</p>
+              </div>
+              <div class="plans-featbenf">
+                <p>Tudo do Basic +</p>
+                <div class="icon-flex">
+                  <img src="../../../../assets/icons/Vector (6).png" alt="">
+                  <p>100 prompts / dia</p>
+                </div>
+                <div class="icon-flex">
+                  <img src="../../../../assets/icons/Clip path group.png" alt="">
+                  <p>Consulta de dados CPF, Placas</p>
+                </div>
+                <div class="icon-flex">
+                  <img src="../../../../assets/icons/Vector (7).png" alt="">
+                  <p>Suporte prioritário</p>
+                </div>
+              </div>
+            </div>
+            <div class="value">
+              <div class="value-flex">
+                <p>R$ <strong class="size">78,90</strong></p>
+                <p>mensalmente</p>
+              </div>
+              <button class="plansSubscribe pSub-highlight"   *ngIf="userPlan === ''"(click)="redirectToCheckout('gold')">Assinar</button>
+
+              <button class="plansSubscribe pSub-highlight"  *ngIf="userPlan === 'basic'"(click)="redirectToCheckout('gold')">Assinar</button>
+              <button class="plansSubscribe pSub-highlight"  *ngIf="userPlan === 'gold'">Plano atual</button>
+
+            </div>
+          </div>
+          <div class="container-planos">
+            <div class="container-planos-text">
+              <div class="planos-maininfo">
+                <h2>Affiliate</h2>
+                <p>Faça dinheiro com nossa IA, se torne um afiliado do Obizilla.</p>
+              </div>
+              <div class="plans-featbenf">
+                <p>Tudo do Gold +</p>
+                <div class="icon-flex">
+                  <img src="../../../../assets/icons/Vector (4).png" alt="">
+                  <p>Prompts ilimitados</p>
+                </div>
+                <div class="icon-flex">
+                  <img src="../../../../assets/icons/Vector (5).png" alt="">
+                  <p>Acesso a comercialização do Obizilla</p>
+                </div>
+                <div class="icon-flex">
+                  <img src="../../../../assets/icons/Vector (6).png" alt="">
+                  <p>50% Revenue Share</p>
+                </div>
+              </div>
+            </div>
+            <div class="value">
+
+              <button class="plansSubscribe pSub-black"   *ngIf="userPlan === 'afiliado'" >Plano atual</button>
+              <button class="plansSubscribe pSub-black" (click)="redirectToCheckout('afiliado')" *ngIf="userPlan === ''">Aplicar</button>
+
+              <button class="plansSubscribe pSub-black" (click)="redirectToCheckout('afiliado')" *ngIf="userPlan === 'gold' || userPlan === 'basic'">Aplicar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<app-toast></app-toast>

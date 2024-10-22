@@ -1,0 +1,293 @@
+body {
+  background-image: none !important;
+  background-color: black;
+
+}
+
+* {
+  margin: 0px;
+}
+
+.container-right {
+  width: 100%;
+  background-color: rgb(0, 0, 0);
+  border-top: 1px solid #161C3D;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  padding-top: 120px;
+
+}.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+}
+
+::ng-deep .p-progress-spinner {
+  .p-progress-spinner-circle {
+    stroke: white; /* Define a cor do spinner como branca */
+  }
+}
+
+
+.wkz-dash {
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  height: 100%;
+}
+
+
+p {
+  color: #BBBBBB;
+  margin: 0px;
+}
+
+.planos {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  background-color: black;
+}
+
+.flex-plans {
+  display: flex;
+  border: solid 1px #161C3D;
+  border-radius: 9px;
+  overflow: hidden;
+}
+
+.container-planos {
+  width: 340px;
+  background: radial-gradient(81.08% 139.46% at 47.43% 100%, rgba(57, 74, 163, 0.04) 0%, rgba(0, 255, 240, 0.00) 100%), rgba(255, 255, 255, 0.01);
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: white;
+  padding: 36px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+
+}
+
+.planoDestaque {
+  background: radial-gradient(81.08% 139.46% at 47.43% 100%, rgba(57, 74, 163, 0.04) 0%, rgba(0, 255, 240, 0.00) 100%), #0A0A0A;
+  border-right: solid 1px #161C3D;
+  border-left: solid 1px #161C3D;
+
+}
+
+.container-planos-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  min-height: 236px;
+
+  h2 {
+    margin: 0px;
+    font-weight: 600;
+  }
+}
+
+.planos-maininfo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 16px;
+}
+
+.plans-featbenf {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.icon-flex {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+button {
+  width: 100%;
+  color: black;
+  height: 45px;
+  border-radius: 10px;
+  font-weight: 500;
+  border: 0px;
+  cursor: pointer;
+  background-color: white;
+  font-size: 17px;
+}
+
+.plansSubscribe {
+  margin-top: 18px;
+  border-radius: 999px;
+  font-weight: 600;
+  transition: all 0.5s;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.pSub-white {
+
+
+  background: radial-gradient(116.62% 46.89% at 61.51% 89.25%, rgba(0, 0, 0, 0.54) 0%, rgba(0, 0, 0, 0.00) 100%), radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.00) 48%, rgba(255, 255, 255, 0.00) 100%), #FFF;
+  box-shadow: 0px 4px 4px 0px rgba(143, 143, 143, 0.1);
+}
+
+
+.pSub-highlight {
+  color: white;
+
+  background: var(--BlueAccent, radial-gradient(116.62% 46.89% at 61.51% 89.25%, rgba(0, 0, 0, 0.54) 0%, rgba(0, 0, 0, 0.00) 100%), radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.00) 48%, rgba(255, 255, 255, 0.00) 100%), #02F);
+  box-shadow: 0px 4px 4px 0px rgba(0, 114, 245, 0.08);
+}
+
+.pSub-black {
+  border-radius: 9999px;
+  border: 1px solid #545454;
+  color: white;
+  background: radial-gradient(116.62% 46.89% at 61.51% 89.25%, rgba(0, 0, 0, 0.54) 0%, rgba(0, 0, 0, 0.00) 100%), radial-gradient(50% 50% at 50% 50%, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.00) 48%, rgba(255, 255, 255, 0.00) 100%);
+  box-shadow: 0px 4px 4px 0px rgba(255, 255, 255, 0.08);
+
+}
+
+
+.ghost {
+  display: none;
+}
+
+.value-flex {
+  display: flex;
+  align-items: center;
+
+  p {
+    display: flex;
+    color: white;
+    font-size: 16px;
+    gap: 5px;
+
+    strong {
+      line-height: 100%;
+      margin-right: 5px;
+    }
+  }
+
+
+
+}
+
+.size {
+  font-size: 40px;
+}
+
+
+
+
+
+@media screen and (max-width: 1417px) {
+
+  .container-right {
+    padding: 64px 20px;
+  }
+
+  .container-planos {
+    width: 100%
+  }
+}
+
+@media screen and (max-width: 1200px) {
+
+  .wkz-dash {
+    height: auto;
+    width: 100%;
+  }
+
+
+  .container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .container-right {
+    padding: 32px 20px;
+  }
+
+  .container-planos {
+    width: 100%;
+  }
+
+  .container-planos-text {
+    min-height: 200px;
+  }
+
+  .flex-plans {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .planos {
+    width: 100%;
+    font-size: 14px;
+
+  }
+
+  .value{
+    margin-top: 10px;
+  }
+
+  .planoDestaque {
+
+    border-right: none;
+    border-left: none;
+    border-top: solid 1px #161C3D;
+    border-bottom: solid 1px #161C3D;
+    ;
+  }
+
+
+
+  .plansSubscribe {
+    width: 300px;
+  }
+
+  .ghost {
+    display: block;
+    margin-top: 100px;
+  }
+
+  button {
+    width: 90%;
+  }
+
+}
+
+@media screen and (max-width: 500px) {
+  .container-planos {
+    width: auto;
+  }
+
+  .ghost {
+    margin-top: 200px;
+  }
+
+  .planos {
+    margin-left: 10px
+  }
+}

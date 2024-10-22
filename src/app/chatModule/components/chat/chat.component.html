@@ -1,0 +1,23 @@
+<app-navbar></app-navbar>
+<div class="container">
+  <!-- Mensagem de boas-vindas -->
+  <div id="messageBox" class="message-box">
+    <img src="../../../../assets/icons/obizilla favicon 1.png" alt="Mascote" class="mascote">
+    <p class="message">Olá! Como posso te ajudar hoje?</p>
+  </div>
+
+  <!-- Área do chat -->
+  <div id="chatArea" class="chat-area" (scroll)="onChatScroll($event)"></div>
+</div>
+
+<!-- Área de input fixo ao final -->
+<div class="input-wrapper">
+  <div class="input-container">
+    <textarea id="userInput" placeholder="Digite aqui..." rows="1" (keydown)="onEnter($event)"></textarea>
+
+    <!-- Ícone de envio usando uma imagem -->
+    <img class="imgs" id="sendButton" src="../../../../assets/icons/pra-cima (2).png" (click)="sendMessage()" style="font-size: 2rem; cursor: pointer;" alt="">
+  </div>
+</div>
+
+

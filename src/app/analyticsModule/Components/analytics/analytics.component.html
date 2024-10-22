@@ -1,0 +1,131 @@
+<section class="wkz-dash">
+  <app-navbar></app-navbar>
+  <div class="container">
+    <div class="sidebar">
+      <app-sidebar></app-sidebar>
+    </div>
+    <div class="container-right">
+      <div class="header-container">
+        <div class="header">
+          <h3>Analytics</h3>
+          <!--         <p-calendar [(ngModel)]="currentDate" [iconDisplay]="'input'" [showIcon]="true" inputId="templatedisplay">
+            <ng-template pTemplate="inputicon" let-clickCallBack="clickCallBack">
+              <i class="pi pi-clock pointer-events-none" (click)="clickCallBack($event)"></i>
+            </ng-template>
+          </p-calendar> -->
+        </div>
+
+        <!-- ANALYTICS CARD -->
+        <div class="cardHolder">
+          <div class="card">
+            <div class="analyticsInfoHolder">
+              <p>Total em vendas:</p>
+              <h4>
+                {{
+                  affiliateData?.data?.total_comission
+                    | currency : "BRL" : "symbol" : "1.2-2"
+                }}
+              </h4>
+              <!-- Format total_commission -->
+            </div>
+            <div class="analyticsInfoHolder">
+              <p>Revenue Share</p>
+              <h4>
+                {{
+                  affiliateData?.data?.rev_share
+                    | currency : "BRL" : "symbol" : "1.2-2"
+                }}<span class="monthSpan">/mês</span>
+              </h4>
+              <!-- Format rev_share -->
+            </div>
+            <div class="analyticsInfoHolder">
+              <p>Assinaturas ativas</p>
+              <h4>{{ affiliateData?.data?.total_sales || "0" }}</h4>
+              <!-- Display active subscriptions -->
+            </div>
+          </div>
+        </div>
+
+        <!-- LINKS DE DIVULGAÇÃO-->
+        <section class="shareLinks">
+          <h3>Links de Divulgação:</h3>
+
+          <!-- PERFECTPAY BUTTON -->
+          <button (click)="handlePopup()">
+            <img src="../../../../assets/icons/perfectpay.png" /> PerfectPay
+          </button>
+        </section>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isPopupVisible" id="shareUrlPopup">
+    <div class="spopup">
+      <button (click)="handlePopup()" class="closeSpopup">X</button>
+
+      <h1>Olá {{ affiliateData?.data?.perfect_name || '' }}!</h1>
+
+      <div class="perfectInfo">
+        <div class="inputHolder">
+          <label> Email (PerfectPay) <span>Alterar</span></label>
+          <input
+            type="text"
+            name="email"
+            [value]="affiliateData?.data?.perfect_email || ''"
+            disabled
+          />
+        </div>
+        <div class="inputHolder">
+          <label> Código de Afiliado <span>Alterar</span></label>
+          <input type="text" name="affCode" [value]="affiliateData?.data?.codigo_afiliado || ''" disabled />
+        </div>
+      </div>
+      <div class="affiliationDetails">
+        <div class="productCard">
+          <h2>Obizilla Basic</h2>
+
+          <div class="pickurl">
+            <p>{{ affiliateUrls.basic }}</p>
+            <button (click)="copyToClipboard(affiliateUrls.basic)">
+              <img src="../../../../assets/icons/copyicon.svg" alt="Copy" />
+            </button>
+          </div>
+
+          <div class="comission">
+            <h1>Comissão: 30%</h1>
+
+            <div class="value">
+              <h2>
+                <span class="valueCurrency">R$</span>11.00<span class="duration"
+                  >mensalmente</span
+                >
+              </h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="productCard">
+          <h2>Obizilla Gold</h2>
+
+          <div class="pickurl">
+            <p>{{ affiliateUrls.gold }}</p>
+            <button (click)="copyToClipboard(affiliateUrls.gold)">
+              <img src="../../../../assets/icons/copyicon.svg" alt="Copy" />
+            </button>
+          </div>
+
+          <div class="comission">
+            <h1>Comissão: 30%</h1>
+
+            <div class="value">
+              <h2>
+                <span class="valueCurrency">R$</span>26.97<span class="duration"
+                  >mensalmente</span
+                >
+              </h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

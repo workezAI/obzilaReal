@@ -1,0 +1,62 @@
+<section class="wkz-dash">
+  <app-navbar></app-navbar>
+  <div class="container">
+    <div class="sidebar">
+      <app-sidebar></app-sidebar>
+    </div>
+    <div class="container-right">
+      <div class="container-settings">
+        <h3 style="color:white; font-weight: 500;">Configurações</h3>
+
+        <!-- NAME GROUP -->
+        <div class="form-group" style="color:white">
+          <label for="name" style="color:white">Nome</label>
+          <div class="toggle-group">
+            <div class="toggle-holder" #nameHolder>
+              <p>{{ newName }}</p>
+              <span id="changeName" (click)="changeNameActive()">Alterar</span>
+            </div>
+            <div class="toggle-change" #changeName style="display: none;">
+              <input id="newName" [(ngModel)]="newName" type="text" placeholder="Novo Nome" class="form-control">
+            </div>
+          </div>
+        </div>
+
+        <!-- EMAIL GROUP -->
+        <div class="form-group" style="color:white">
+          <label for="email" style="color:white">Email</label>
+          <div class="toggle-group">
+            <div class="toggle-holder" #mailHolder>
+              <p>{{ newEmail }}</p>
+              <span id="changeMail" (click)="changeMailActive()">Alterar</span>
+            </div>
+            <div class="toggle-change" #changeMail style="display: none;">
+              <input id="newEmail" [(ngModel)]="newEmail" type="text" placeholder="Novo Email" class="form-control">
+            </div>
+          </div>
+        </div>
+
+        <!-- PASSWORD GROUP -->
+        <div class="form-group" style="color:white">
+          <label for="password" style="color:white">Senha</label>
+          <div class="toggle-group">
+            <div class="toggle-holder" #pwHolder>
+              <p>*********</p>
+              <span id="changePw" (click)="changePwActive()">Alterar</span>
+            </div>
+            <div class="toggle-change" #resetPw style="display: none;">
+              <input id="currentPw" [(ngModel)]="currentPassword" type="password" placeholder="Senha Atual" class="form-control">
+              <input id="newPw" [(ngModel)]="newPassword" type="password" placeholder="Nova Senha" class="form-control">
+            </div>
+          </div>
+        </div>
+
+        <!-- BOTÃO DE SALVAR -->
+        <div>
+          <button class="btn btn-primary" (click)="saveChanges()">Salvar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<app-toast></app-toast>
