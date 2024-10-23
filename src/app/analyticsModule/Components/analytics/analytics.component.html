@@ -8,7 +8,7 @@
       <div class="header-container">
         <div class="header">
           <h3>Analytics</h3>
-          <!--         <p-calendar [(ngModel)]="currentDate" [iconDisplay]="'input'" [showIcon]="true" inputId="templatedisplay">
+          <!--<p-calendar [(ngModel)]="currentDate" [iconDisplay]="'input'" [showIcon]="true" inputId="templatedisplay">
             <ng-template pTemplate="inputicon" let-clickCallBack="clickCallBack">
               <i class="pi pi-clock pointer-events-none" (click)="clickCallBack($event)"></i>
             </ng-template>
@@ -22,7 +22,7 @@
               <p>Total em vendas:</p>
               <h4>
                 {{
-                  affiliateData?.data?.total_comission
+                  (affiliateData?.data?.total_comission ?? 0)
                     | currency : "BRL" : "symbol" : "1.2-2"
                 }}
               </h4>
@@ -32,7 +32,7 @@
               <p>Revenue Share</p>
               <h4>
                 {{
-                  affiliateData?.data?.rev_share
+                  (affiliateData?.data?.rev_share ?? 0)
                     | currency : "BRL" : "symbol" : "1.2-2"
                 }}<span class="monthSpan">/mês</span>
               </h4>
