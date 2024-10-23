@@ -1,6 +1,4 @@
-
-
-  <div class="container-login">
+<div class="container-login">
     <img src="../../../../assets/img/Navbar Brand.png" alt="" />
     <app-toast></app-toast>
 
@@ -9,12 +7,12 @@
         <p style="color: white; font-weight: 500; font-size: 30px;">Bem Vindo!</p>
         <div class="form-group" style="color:white">
           <div class="input-container">
-            <input id="email" placeholder=" " [(ngModel)]="email" type="email" class="form-control" (keydown.enter)="login()">
+            <input id="email" placeholder=" " [(ngModel)]="email" type="email" class="form-control" (keydown.enter)="login()" style="font-size: 16px;">
             <label for="email">Email*</label>
           </div>
 
           <div class="input-container">
-            <input id="password" [(ngModel)]="password" placeholder=" " type="password" class="form-control" (keydown.enter)="login()">
+            <input id="password" [(ngModel)]="password" placeholder=" " type="password" class="form-control" (keydown.enter)="login()" style="font-size: 16px;">
             <label for="password">Senha*</label>
           </div>
 
@@ -27,17 +25,17 @@
         <p style="color: white; font-weight: 500; font-size: 30px;">Bem Vindo!</p>
         <div class="form-group" style="color:white">
           <div class="input-container">
-            <input id="full_name" placeholder=" " [(ngModel)]="full_name" type="text" class="form-control" (keydown.enter)="signUp()">
+            <input id="full_name" placeholder=" " [(ngModel)]="full_name" type="text" class="form-control" (keydown.enter)="signUp()" style="font-size: 16px;">
             <label for="full_name">Nome completo*</label>
           </div>
 
           <div class="input-container">
-            <input id="email" placeholder=" " [(ngModel)]="email" type="email" class="form-control" (keydown.enter)="signUp()">
+            <input id="email" placeholder=" " [(ngModel)]="email" type="email" class="form-control" (keydown.enter)="signUp()" style="font-size: 16px;">
             <label for="email">Email*</label>
           </div>
 
           <div class="input-container">
-            <input id="password" [(ngModel)]="password" placeholder=" " type="password" class="form-control" (keydown.enter)="signUp()">
+            <input id="password" [(ngModel)]="password" placeholder=" " type="password" class="form-control" (keydown.enter)="signUp()" style="font-size: 16px;">
             <label for="password">Senha*</label>
           </div>
 
@@ -47,3 +45,4 @@
         <p style="color: #0022FF;cursor: pointer;" (click)="toggleRegister()">Login</p>
       }
     </div>
+</div>
