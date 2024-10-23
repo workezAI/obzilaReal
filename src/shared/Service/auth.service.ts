@@ -3,6 +3,8 @@ import { createClient } from '@supabase/supabase-js';
 import * as bcrypt from 'bcryptjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { v4 as uuidv4 } from 'uuid';
+import { ToastrService } from 'ngx-toastr';
+
 import { Message } from '../../app/PlansModule/Components/types/message.type';
 // Definindo o tipo User
 type User = {
@@ -37,53 +39,58 @@ const supabase = createClient(supabaseUrl, supabaseKey, {
 export class AuthService {
   jwtHelper = new JwtHelperService();
 
-  constructor() {}
+  constructor(private toastr: ToastrService) {}
 
   // Método de login
-  async login(email: string, password: string): Promise<{ message: string; token: string; user: User } | null> {
-    try {
-      const { data: user, error: userError } = await supabase
-        .from('users')
-        .select('id, email, password')
-        .eq('email', email)
-        .single();
-
-      if (userError || !user) {
-        console.error('Erro: Usuário não encontrado', userError);
-        return null;
-      }
-
-      let passwordMatch = false;
-
-      // Tentar comparar a senha como se estivesse criptografada
+   async login(email: string, password: string): Promise<{ message: string; token: string; user: User } | null> {
       try {
-        passwordMatch = await bcrypt.compare(password, user.password);
-      } catch (bcryptError) {
-        console.warn('Erro ao tentar descriptografar a senha, tentando comparação direta', bcryptError);
+          const { data: user, error: userError } = await supabase
+              .from('users')
+              .select('id, email, password')
+              .eq('email', email)
+              .single();
+
+          if (userError || !user) {
+
+              const errorMessage = ' Usuário não encontrado';
+              this.toastr.error(errorMessage);
+              console.error(errorMessage, userError);
+              throw new Error(errorMessage);
+          }
+
+          let passwordMatch = false;
+
+          // Tentar comparar a senha como se estivesse criptografada
+          try {
+              passwordMatch = await bcrypt.compare(password, user.password);
+          } catch (bcryptError) {
+              console.warn('Erro ao tentar descriptografar a senha, tentando comparação direta', bcryptError);
+          }
+
+          // Se a comparação criptografada falhar, fazer uma comparação direta
+          if (!passwordMatch) {
+              passwordMatch = password === user.password;
+          }
+
+          if (!passwordMatch) {
+              const errorMessage = 'Erro: Senha incorreta';
+              this.toastr.error(errorMessage, 'Senha incorreta');
+              console.error(errorMessage);
+              throw new Error(errorMessage);
+          }
+
+          // Gerar token localmente após login bem-sucedido
+          const token = this.generateToken(user);
+
+          // Armazenar o token e o email do usuário no localStorage
+          localStorage.setItem('authToken', token);
+          localStorage.setItem('userEmail', user.email); // Guardando o email do usuário logado
+
+          return { message: 'Login bem-sucedido', token, user };
+      } catch (error) {
+          console.error('Erro no login:', error);
+          throw error;
       }
-
-      // Se a comparação criptografada falhar, fazer uma comparação direta
-      if (!passwordMatch) {
-        passwordMatch = password === user.password;
-      }
-
-      if (!passwordMatch) {
-        console.error('Erro: Senha incorreta');
-        return null;
-      }
-
-      // Gerar token localmente após login bem-sucedido
-      const token = this.generateToken(user);
-
-      // Armazenar o token e o email do usuário no localStorage
-      localStorage.setItem('authToken', token);
-      localStorage.setItem('userEmail', user.email); // Guardando o email do usuário logado
-
-      return { message: 'Login bem-sucedido', token, user };
-    } catch (error) {
-      console.error('Erro no login:', error);
-      return null;
-    }
   }
   async getUserById(userId: string): Promise<User | null> {
     try {
@@ -133,7 +140,9 @@ export class AuthService {
         .single();
 
       if (existingUser) {
+        this
         console.error('Erro: Este e-mail já está registrado');
+        this.toastr.error('Erro: Este e-mail já está registrado', 'Erro no registro');
         return null;
       }
 
@@ -161,6 +170,7 @@ export class AuthService {
         .single();
 
       if (insertError) {
+        this.toastr.error('Erro ao registrar o usuário', 'Erro no registro');
         console.error('Erro ao registrar o usuário:', insertError.message);
         return null;
       }
@@ -290,6 +300,7 @@ async getLoggedInUser(): Promise<User | null> {
 
     if (error) {
       console.error('Erro ao buscar senha do usuário', error);
+      this.toastr.error('Erro ao buscar senha do usuário', 'Erro');
       return false;
     }
 
@@ -307,6 +318,7 @@ async getLoggedInUser(): Promise<User | null> {
 
     if (error) {
       console.error('Erro ao atualizar o nome do usuário', error);
+      this.toastr.error('Erro ao atualizar o nome do usuário' + error, );
       return false;
     }
 
@@ -324,6 +336,7 @@ async getLoggedInUser(): Promise<User | null> {
 
     if (error) {
       console.error('Erro ao atualizar o email do usuário', error);
+      this.toastr.error('Erro ao atualizar o email do usuário',);
       return false;
     }
 

@@ -1,13 +1,15 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AuthService } from '../../../../shared/Service/auth.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastComponent } from '../../../../shared/toast/toast.component';
+import { ToastrService } from 'ngx-toastr';
+import { ButtonModule } from 'primeng/button';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-login-formulario',
   standalone: true,
-  imports: [FormsModule, ToastComponent],
+  imports: [FormsModule, ButtonModule, NgIf],
   templateUrl: './login-formulario.component.html',
   styleUrls: ['./login-formulario.component.scss']
 })
@@ -16,50 +18,56 @@ export class LoginFormularioComponent implements OnInit {
   password: string = '';
   register: boolean = false;
   full_name: string = '';
-  @ViewChild(ToastComponent) toast!: ToastComponent;
+  loading: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  @ViewChild('loginButton', { static: false }) loginButton!: ElementRef;
+
+  constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) {}
 
   async ngOnInit() {}
+
   async login() {
-    const data = await this.authService.login(this.email, this.password);
-    if (data) {
-      console.log('Login bem-sucedido:', data);
-      this.showToast('Login bem-sucedido!', 'success');
-      setTimeout(() => {
-        this.router.navigate(['/dashboard/plans']);
-      }, 500); // 5 segundos
-    } else {
-      console.error('Erro no login.');
-      this.showToast('Erro no login.', 'error');
+    this.loading = true;
+    try {
+      const data = await this.authService.login(this.email, this.password);
+      if (data) {
+        console.log('Login bem-sucedido:', data);
+        setTimeout(() => {
+          this.router.navigate(['/dashboard/plans']);
+        }, 50); // 5 segundos
+      }
+    } catch (error: any) {
+      console.error('Erro no login:', error.message);
+    } finally {
+      this.loading = false;
     }
   }
 
   async signUp() {
-    const data = await this.authService.signUp(this.email, this.password, this.full_name);
-    if (data) {
-      console.log('Registro bem-sucedido:', data);
-      this.showToast('Registro bem-sucedido!', 'success');
-    } else {
-      console.error('Erro no registro.');
-      this.showToast('Erro no registro.', 'error');
+    try {
+      const data = await this.authService.signUp(this.email, this.password, this.full_name);
+      if (data) {
+        console.log('Registro bem-sucedido:', data);
+        this.toastr.success('Registro bem-sucedido!', 'Sucesso');
+        this.register = false;
+        setTimeout(() => {
+          this.loginButton.nativeElement.click();
+        }, 500); // Clicar no botão de login automaticamente
+      } else {
+      }
+    } catch (error: any) {
+      console.error('Erro no registro:', error.message);
+      this.toastr.error('Erro no registro: ' + error.message, 'Erro');
     }
   }
 
   async logout() {
     await this.authService.logout();
     console.log('Logout bem-sucedido!');
-    this.showToast('Logout bem-sucedido!', 'info');
+    this.toastr.success('Logout bem-sucedido!', 'Sucesso');
   }
 
   toggleRegister() {
     this.register = !this.register;
-  }
-
-  showToast(message: string, type: 'success' | 'error' | 'info') {
-    this.toast.message = message;
-    this.toast.type = type;
-    this.toast.show = true;
-    setTimeout(() => this.toast.hideToast(), 3000);
   }
 }

@@ -1,6 +1,5 @@
 <div class="container-login">
     <img src="../../../../assets/img/Navbar Brand.png" alt="" />
-    <app-toast></app-toast>
 
     <div class="container-settings">
       @if (register == false) {
@@ -16,7 +15,10 @@
             <label for="password">Senha*</label>
           </div>
 
-          <button class="btn btn-primary" (keydown.enter)="login()" (click)="login()">Continue</button>
+          <button #loginButton class="btn btn-primary" (keydown.enter)="login()" (click)="login()">   <ng-container *ngIf="!loading; else loadingTemplate">Continue</ng-container>
+            <ng-template #loadingTemplate>
+              <i class="pi pi-spin pi-spinner"></i>
+            </ng-template></button>
         </div>
         <p>Não possui uma conta?</p>
         <p style="color: #0022FF;cursor: pointer;" (click)="toggleRegister()">Registre-se</p>
@@ -46,3 +48,4 @@
       }
     </div>
 </div>
+<div class="toast-container"></div>
