@@ -18,7 +18,6 @@ export class PlanGuard implements CanActivate {
     this.setUserIDFromToken();
     const userId = this.userId;
 
-    console.log(userId, 'aaaaaaaaaaaaaaaaaaaa');
     if (!userId) {
       this.toastr.warning('Você não está autenticado.', 'Acesso Negado');
       return false;
@@ -35,10 +34,8 @@ export class PlanGuard implements CanActivate {
 
   setUserIDFromToken(): void {
     const token = localStorage.getItem('authToken');
-    console.log('Token:', token);
     if (token) {
       const decodedToken = this.authService.decodeToken(token);
-      console.log('Decoded token:', decodedToken);
       if (decodedToken && decodedToken.id) {
         this.userId = decodedToken.id;
       }

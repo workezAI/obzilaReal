@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavbarComponent } from '../../../../shared/navbar/navbar.component';
 import { AuthService } from '../../../../shared/Service/auth.service';
+import { Message } from '../../../PlansModule/Components/types/message.type';
 
 @Component({
   selector: 'app-chat',
@@ -15,11 +16,74 @@ export class ChatComponent implements OnInit {
   aiResponses: string[] = [];
   canSendMessage: boolean = true; // Controla se o envio de mensagem é permitido
   shouldScroll: boolean = true; // Controla se o chat deve rolar automaticamente para o fim
-  aiMode: string = 'normal'; // Inicializa ai_mode com 'normal'
+  aiMode: string = 'normal';
+  userMessages: Message[] = []; // Inicializa ai_mode com 'normal'
+  userID = '';
+  user: any;
+  plan: any; // Variável para armazenar os dados do plano
+  dailyMessageCount: number = 0; // Variável para contar as mensagens diárias
 
   constructor(private changeDetectorRef: ChangeDetectorRef, private auth: AuthService) {}
 
-  ngOnInit(): void {}
+  async ngOnInit() {
+    this.setUserIDFromToken();
+    await this.getUser();
+    await this.getUserMessages();
+    this.changeDetectorRef.detectChanges();
+  }
+
+  async getUser() {
+    try {
+      this.user = await this.auth.getUserById(this.userID);
+
+      if (this.user && this.user.plan_id) {
+        await this.getPlanById(this.user.plan_id);
+      }
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+    }
+  }
+
+  async getPlanById(planID: string) {
+    try {
+      this.plan = await this.auth.getPlanById(planID);
+    } catch (error) {
+      console.error('Error fetching plan data:', error);
+    }
+  }
+
+  async postMessages(mensagem: string) {
+    try {
+      const plan_id = this.user.plan_id;
+      const user_id = this.user.id;
+      const data_envio = new Date().toISOString(); // Data de envio atual
+
+      const message = await this.auth.postMessagens(mensagem, plan_id, user_id, data_envio);
+    } catch (error) {
+      console.error('Error posting message data:', error);
+    }
+  }
+
+  async getUserMessages() {
+    try {
+      const messages = await this.auth.getMessagesById(this.user.id);
+
+      if (messages.length > 0) {
+        const envioDate = new Date(messages[0].data_envio).toISOString().split('T')[0];
+        const today = new Date().toISOString().split('T')[0];
+
+        if (envioDate < today) {
+          await this.resetMessageCountOnServer();
+        } else {
+          this.dailyMessageCount = parseInt(messages[0].message_count, 10);
+        }
+      } else {
+        this.dailyMessageCount = 0;
+      }
+    } catch (error) {
+      console.error('Error fetching user messages:', error);
+    }
+  }
 
   // Método para verificar se o chat está no final
   onChatScroll(event: any) {
@@ -37,13 +101,31 @@ export class ChatComponent implements OnInit {
     }
   }
 
+  setUserIDFromToken(): void {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      const decodedToken = this.auth.decodeToken(token);
+      if (decodedToken && decodedToken.id) {
+        this.userID = decodedToken.id;
+      }
+    }
+  }
+
   // Método para enviar a mensagem
-  sendMessage() {
+  async sendMessage() {
     const inputElement = document.getElementById('userInput') as HTMLTextAreaElement;
     const sendButton = document.getElementById('sendButton') as HTMLElement;
     const messageText = inputElement.value.trim();
 
     if (!messageText || !this.canSendMessage) return;
+
+    // Verificar o limite de mensagens
+    if (this.plan && this.dailyMessageCount >= this.plan.message_limit) {
+      this.appendMessage('bot', 'Você atingiu o limite diário de mensagens.');
+      this.canSendMessage = false; // Desabilita o envio de novas mensagens
+      sendButton.style.opacity = '0.5'; // Opacidade reduzida
+      return;
+    }
 
     // Desabilita o envio de novas mensagens
     this.canSendMessage = false;
@@ -65,6 +147,12 @@ export class ChatComponent implements OnInit {
 
     // Exibe o loader
     this.appendLoading();
+
+    // Posta a mensagem do usuário no banco de dados
+    await this.postMessages(messageText);
+
+    // Atualiza a contagem de mensagens diárias
+    this.dailyMessageCount++;
 
     // Envia a mensagem e os arrays de perguntas e respostas para o webhook
     fetch('https://webhook.workez.online/webhook/fe8ee5ca-1a13-449f-bc2c-54fca1795da6', {
@@ -248,5 +336,25 @@ export class ChatComponent implements OnInit {
         chatArea.scrollTop = chatArea.scrollHeight;
       }
     }, 100); // Atraso de 100ms para garantir que a mensagem tenha sido renderizada
+  }
+
+  // Função para resetar a contagem de mensagens diárias se for um novo dia
+  async resetDailyMessageCountIfNewDay(data_envio: string) {
+    const today = new Date().toISOString().split('T')[0];
+    const envioDate = data_envio.split('T')[0];
+
+    if (today !== envioDate) {
+      this.dailyMessageCount = 0;
+      await this.resetMessageCountOnServer();
+    }
+  }
+
+  // Função para resetar a contagem de mensagens no servidor
+  async resetMessageCountOnServer() {
+    try {
+      await this.auth.resetMessageCount(this.user.id);
+    } catch (error) {
+      console.error('Error resetting message count on server:', error);
+    }
   }
 }

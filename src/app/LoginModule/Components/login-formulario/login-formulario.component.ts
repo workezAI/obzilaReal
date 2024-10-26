@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AuthService } from '../../../../shared/Service/auth.service';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ButtonModule } from 'primeng/button';
 import { NgIf } from '@angular/common';
@@ -22,16 +22,27 @@ export class LoginFormularioComponent implements OnInit {
 
   @ViewChild('loginButton', { static: false }) loginButton!: ElementRef;
 
-  constructor(private authService: AuthService, private router: Router, private toastr: ToastrService) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private toastr: ToastrService
+  ) {}
 
-  async ngOnInit() {}
+  async ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params['email']) {
+        this.email = params['email'];
+      }
+    });
+  }
 
   async login() {
     this.loading = true;
     try {
       const data = await this.authService.login(this.email, this.password);
       if (data) {
-        console.log('Login bem-sucedido:', data);
+        console.log('Login bem-sucedido:');
         setTimeout(() => {
           this.router.navigate(['/dashboard/plans']);
         }, 50); // 5 segundos

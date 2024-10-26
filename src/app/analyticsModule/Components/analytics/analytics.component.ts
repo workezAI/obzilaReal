@@ -31,7 +31,6 @@ export class AnalyticsComponent implements OnInit {
       this.auth.getUserById(this.userID).then((data) => {
         if (data) {
           this.userID = data.id;
-          console.log('User data:', this.userID);
         }
       }).catch((error) => {
         console.error('Error fetching user data:', error);
@@ -41,10 +40,8 @@ export class AnalyticsComponent implements OnInit {
 
   setUserIDFromToken(): void {
     const token = localStorage.getItem('authToken');
-    console.log('Token:', token);
     if (token) {
       const decodedToken = this.auth.decodeToken(token);
-      console.log('Decoded token:', decodedToken);
       if (decodedToken && decodedToken.id) {
         this.userID = decodedToken.id;
       }
@@ -69,8 +66,6 @@ export class AnalyticsComponent implements OnInit {
           this.affiliateUrls.basic = `https://checkout.perfectpay.com.br/pay/PPU38CP4O1P?ref=${codigoAfiliado}`;
           this.affiliateUrls.gold = `https://checkout.perfectpay.com.br/pay/PPU38CP4O1Q?ref=${codigoAfiliado}`;
         }
-
-        console.log('Affiliate URLs:', this.affiliateUrls);
       },
       error: (error) => {
         console.error('Error fetching affiliate details:', error);
@@ -79,14 +74,12 @@ export class AnalyticsComponent implements OnInit {
   }
 
   copyToClipboard(url: string): void {
-    navigator.clipboard.writeText(url).then(() => {
-      console.log('URL copied to clipboard:', url);
-    }).catch((error) => {
+    navigator.clipboard.writeText(url).catch((error) => {
       console.error('Failed to copy URL:', error);
     });
   }
+
   handlePopup(): void {
     this.isPopupVisible = !this.isPopupVisible;
   }
-
 }

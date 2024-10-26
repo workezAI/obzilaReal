@@ -4,8 +4,8 @@ import * as bcrypt from 'bcryptjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { v4 as uuidv4 } from 'uuid';
 import { ToastrService } from 'ngx-toastr';
-
 import { Message } from '../../app/PlansModule/Components/types/message.type';
+
 // Definindo o tipo User
 type User = {
   id: string;
@@ -42,55 +42,73 @@ export class AuthService {
   constructor(private toastr: ToastrService) {}
 
   // Método de login
-   async login(email: string, password: string): Promise<{ message: string; token: string; user: User } | null> {
-      try {
-          const { data: user, error: userError } = await supabase
-              .from('users')
-              .select('id, email, password')
-              .eq('email', email)
-              .single();
+  async login(email: string, password: string): Promise<{ message: string; token: string; user: User } | null> {
+    try {
+      const { data: user, error: userError } = await supabase
+        .from('users')
+        .select('id, email, password')
+        .eq('email', email)
+        .single();
 
-          if (userError || !user) {
-
-              const errorMessage = ' Usuário não encontrado';
-              this.toastr.error(errorMessage);
-              console.error(errorMessage, userError);
-              throw new Error(errorMessage);
-          }
-
-          let passwordMatch = false;
-
-          // Tentar comparar a senha como se estivesse criptografada
-          try {
-              passwordMatch = await bcrypt.compare(password, user.password);
-          } catch (bcryptError) {
-              console.warn('Erro ao tentar descriptografar a senha, tentando comparação direta', bcryptError);
-          }
-
-          // Se a comparação criptografada falhar, fazer uma comparação direta
-          if (!passwordMatch) {
-              passwordMatch = password === user.password;
-          }
-
-          if (!passwordMatch) {
-              const errorMessage = 'Erro: Senha incorreta';
-              this.toastr.error(errorMessage, 'Senha incorreta');
-              console.error(errorMessage);
-              throw new Error(errorMessage);
-          }
-
-          // Gerar token localmente após login bem-sucedido
-          const token = this.generateToken(user);
-
-          // Armazenar o token e o email do usuário no localStorage
-          localStorage.setItem('authToken', token);
-          localStorage.setItem('userEmail', user.email); // Guardando o email do usuário logado
-
-          return { message: 'Login bem-sucedido', token, user };
-      } catch (error) {
-          console.error('Erro no login:', error);
-          throw error;
+      if (userError || !user) {
+        const errorMessage = 'Usuário não encontrado';
+        this.toastr.error(errorMessage);
+        console.error(errorMessage, userError);
+        throw new Error(errorMessage);
       }
+
+      let passwordMatch = false;
+
+      // Tentar comparar a senha como se estivesse criptografada
+      try {
+        passwordMatch = await bcrypt.compare(password, user.password);
+      } catch (bcryptError) {
+        console.warn('Erro ao tentar descriptografar a senha, tentando comparação direta', bcryptError);
+      }
+
+      // Se a comparação criptografada falhar, fazer uma comparação direta
+      if (!passwordMatch) {
+        passwordMatch = password === user.password;
+
+        // Se a senha não estiver criptografada, criptografar e atualizar no banco de dados
+        if (passwordMatch) {
+          try {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const { error: updateError } = await supabase
+              .from('users')
+              .update({ password: hashedPassword })
+              .eq('id', user.id);
+
+            if (updateError) {
+              console.error('Erro ao atualizar a senha criptografada no banco de dados:', updateError);
+              throw new Error('Erro ao atualizar a senha criptografada no banco de dados');
+            }
+          } catch (hashError) {
+            console.error('Erro ao criptografar a senha:', hashError);
+            throw new Error('Erro ao criptografar a senha');
+          }
+        }
+      }
+
+      if (!passwordMatch) {
+        const errorMessage = 'Erro: Senha incorreta';
+        this.toastr.error(errorMessage, 'Senha incorreta');
+        console.error(errorMessage);
+        throw new Error(errorMessage);
+      }
+
+      // Gerar token localmente após login bem-sucedido
+      const token = this.generateToken(user);
+
+      // Armazenar o token e o email do usuário no localStorage
+      localStorage.setItem('authToken', token);
+      localStorage.setItem('userEmail', user.email); // Guardando o email do usuário logado
+
+      return { message: 'Login bem-sucedido', token, user };
+    } catch (error) {
+      console.error('Erro no login:', error);
+      throw error;
+    }
   }
   async getUserById(userId: string): Promise<User | null> {
     try {
@@ -208,6 +226,10 @@ export class AuthService {
     return token;
   }
   async getPlanById(planId: string): Promise<Plan | null> {
+    if (!planId) {
+      console.log(' planId está vazio');
+      return null;
+    }
     try {
       const { data: plan, error } = await supabase
         .from('plans')
@@ -226,35 +248,131 @@ export class AuthService {
       return null;
     }
   }
-  async getMessages(): Promise<Message[]> {
-    try {
-      const { data: messages, error } = await supabase
-        .from('messages')
-        .select('id, plan_id, user_id, text, created_at');
 
-      if (error || !messages) {
-        console.error('Erro ao buscar mensagens:', error);
+  // async getMessages(): Promise<Message[]> {
+  //   try {
+  //     const { data: messages, error } = await supabase
+  //       .from('mensagens')
+  //       .select('id, mensagens, plan_id, user_id, data_envio, message_count')
+
+  //     if (error || !messages) {
+  //       console.error('Erro ao buscar mensagens:', error);
+  //       return [];
+  //     }
+  //     console.log('Mensagens:', messages);
+  //     return messages as Message[];
+  //   } catch (error) {
+  //     console.error('Erro ao buscar mensagens:', error);
+  //     return [];
+  //   }
+
+  // }
+  async resetMessageCount(userId: string): Promise<boolean> {
+    try {
+      const { error } = await supabase
+        .from('mensagens')
+        .update({ message_count: 0, mensagens: [] }) // Atualiza message_count e mensagens
+        .eq('user_id', userId);
+
+      if (error) {
+        console.error('Erro ao resetar o contador de mensagens:', error);
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Erro ao resetar o contador de mensagens:', error);
+      return false;
+    }
+  }
+  async getMessagesById(id: string): Promise<Message[]> {
+    try {
+      const { data: messages, error, status} = await supabase
+      .from('mensagens')
+      .select('id, mensagens, plan_id, user_id, data_envio, message_count')
+      .eq('user_id', id);
+
+      if (error && (status === 406 || status === 404)) {
+        console.warn('Nenhuma mensagem encontrada para o usuário:', id);
         return [];
       }
+
+      if (error) {
+        console.error('Erro ao buscar mensagens:', error);
+        throw new Error('Erro ao buscar mensagens');
+      }
+
       console.log('Mensagens:', messages);
-      return messages as Message[];
+      return messages ? messages : [];
     } catch (error) {
-      console.error('Erro ao buscar mensagens:', error);
-      return [];
+      console.error('Erro no método getMessagesById:', error);
+      throw error;
     }
   }
 
-  // async getMessagesById(): Promise<Message[]> {
-  //   try{
-  //     const { data: messages, error} await supabase
-  //     .from('messages')
-  //     .select( 'id', 'plan_id, user_id, text, created_at')
-  //     .eq('id', id)
-  //     .single();
-  //   }
-  // }
+  async postMessagens(mensagem: string, plan_id: string, user_id: string, data_envio: string): Promise<Message | null> {
+    try {
+      console.log('dataenvio:', plan_id);
+        // Verificar se já existe uma mensagem para o user_id
+        const { data: existingMessage, error: fetchError } = await supabase
+            .from('mensagens')
+            .select('id, mensagens, plan_id, user_id, data_envio, message_count')
+            .eq('user_id', user_id)
+            .single();
+      console.log('existingMessage:', existingMessage);
+        if (fetchError && fetchError.code !== 'PGRST116') { // PGRST116: No rows found
+            console.error('Erro ao buscar mensagem existente:', fetchError);
+            return null;
+        }
 
-  // Método para decodificar o token
+        let newMessage;
+              if (existingMessage) {
+                console.log('entrei aquiiiiiiii');
+                // Atualizar o array de mensagens e o contador de mensagens
+                const updatedMensagens = [...existingMessage.mensagens, { mensagem, data_envio }];
+                const { data: updatedMessage, error: updateError } = await supabase
+                  .from('mensagens')
+                  .update({
+                    mensagens: updatedMensagens,
+                    message_count: existingMessage.message_count + 1,
+                    data_envio: new Date(data_envio).toISOString(), // Atualiza a data de envio fora do array com a nova data formatada
+                    plan_id:  plan_id
+                  })
+                  .eq('id', existingMessage.id)
+                  .single();
+
+                if (updateError || !updatedMessage) {
+                  return null;
+                }
+
+                newMessage = updatedMessage;
+              } else {
+            // Inserir uma nova linha com a mensagem inicial em um array
+            const { data: insertedMessage, error: insertError } = await supabase
+                .from('mensagens')
+                .insert([{
+                    id: uuidv4(),
+                    mensagens: [{ mensagem, data_envio }],
+                    plan_id,
+                    user_id,
+                    data_envio,
+                    message_count: 1
+                }])
+                .single();
+
+            if (insertError || !insertedMessage) {
+                return null;
+            }
+
+            newMessage = insertedMessage;
+        }
+
+        return newMessage as Message;
+    } catch (error) {
+        console.error('Erro ao inserir ou atualizar mensagem:', error);
+        return null;
+    }
+}
   decodeToken(token: string): { id: string; email: string; exp: number } | null {
     try {
       return JSON.parse(atob(token));
@@ -375,6 +493,7 @@ async getLoggedInUser(): Promise<User | null> {
     return data;
   }
 
+
   // Função para atualizar o plano do usuário
   async updateUserPlan(userId: string, planId: string): Promise<boolean> {
     if (!userId || !planId) {
@@ -395,48 +514,6 @@ async getLoggedInUser(): Promise<User | null> {
     return true;
   }
 
-  async getPlanBasic(planName: string): Promise<{ id: string } | null> {
-    try {
-      const planName = 'basic'; // ou 'gold'
-
-      const { data, error } = await supabase
-        .from('plans')
-        .select('id')
-        .eq('name', planName) // O nome deve ser 'basic' ou 'gold', como na sua tabela
-        .single(); // Garante que apenas uma linha será retornada, já que o 'name' é único
-
-      if (error || !data) {
-        console.error('Erro ao buscar plano por nome:', error?.message || 'Nenhum dado encontrado');
-        return null;
-      }
-
-      return data;
-    } catch (error) {
-      console.error('Erro ao buscar o plano:', error);
-      return null;
-    }
-  }
-  async getPlanGold(planName: string): Promise<{ id: string } | null> {
-    try {
-      const planName = 'gold'; // ou 'gold'
-
-      const { data, error } = await supabase
-        .from('plans')
-        .select('id')
-        .eq('name', planName) // O nome deve ser 'basic' ou 'gold', como na sua tabela
-        .single(); // Garante que apenas uma linha será retornada, já que o 'name' é único
-
-      if (error || !data) {
-        console.error('Erro ao buscar plano por nome:', error?.message || 'Nenhum dado encontrado');
-        return null;
-      }
-
-      return data;
-    } catch (error) {
-      console.error('Erro ao buscar o plano:', error);
-      return null;
-    }
-  }
 
 
 }

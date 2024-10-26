@@ -1,51 +1,51 @@
 <div class="container-login">
-    <img src="../../../../assets/img/Navbar Brand.png" alt="" />
+  <img src="../../../../assets/img/Navbar Brand.png" alt="" />
 
-    <div class="container-settings">
-      @if (register == false) {
-        <p style="color: white; font-weight: 500; font-size: 30px;">Bem Vindo!</p>
-        <div class="form-group" style="color:white">
-          <div class="input-container">
-            <input id="email" placeholder=" " [(ngModel)]="email" type="email" class="form-control" (keydown.enter)="login()" style="font-size: 16px;">
-            <label for="email">Email*</label>
-          </div>
-
-          <div class="input-container">
-            <input id="password" [(ngModel)]="password" placeholder=" " type="password" class="form-control" (keydown.enter)="login()" style="font-size: 16px;">
-            <label for="password">Senha*</label>
-          </div>
-
-          <button #loginButton class="btn btn-primary" (keydown.enter)="login()" (click)="login()">   <ng-container *ngIf="!loading; else loadingTemplate">Continue</ng-container>
-            <ng-template #loadingTemplate>
-              <i class="pi pi-spin pi-spinner"></i>
-            </ng-template></button>
+  <div class="container-settings">
+    @if (register == false) {
+      <p style="color: white; font-weight: 500; font-size: 30px;">Bem Vindo!</p>
+      <div class="form-group" style="color:white">
+        <div class="input-container">
+          <input id="email" placeholder=" " [(ngModel)]="email" type="email" class="form-control" (keydown.enter)="login()" style="font-size: 16px;">
+          <label for="email">Email*</label>
         </div>
-        <p>Não possui uma conta?</p>
-        <p style="color: #0022FF;cursor: pointer;" (click)="toggleRegister()">Registre-se</p>
-      }
-      @else {
-        <p style="color: white; font-weight: 500; font-size: 30px;">Bem Vindo!</p>
-        <div class="form-group" style="color:white">
-          <div class="input-container">
-            <input id="full_name" placeholder=" " [(ngModel)]="full_name" type="text" class="form-control" (keydown.enter)="signUp()" style="font-size: 16px;">
-            <label for="full_name">Nome completo*</label>
-          </div>
 
-          <div class="input-container">
-            <input id="email" placeholder=" " [(ngModel)]="email" type="email" class="form-control" (keydown.enter)="signUp()" style="font-size: 16px;">
-            <label for="email">Email*</label>
-          </div>
-
-          <div class="input-container">
-            <input id="password" [(ngModel)]="password" placeholder=" " type="password" class="form-control" (keydown.enter)="signUp()" style="font-size: 16px;">
-            <label for="password">Senha*</label>
-          </div>
-
-          <button class="btn btn-primary" (click)="signUp()">Registrar</button>
+        <div class="input-container">
+          <input id="password" [(ngModel)]="password" placeholder=" " type="password" class="form-control" (keydown.enter)="login()" style="font-size: 16px;">
+          <label for="password">Senha*</label>
         </div>
-        <p>Já possui uma conta?</p>
-        <p style="color: #0022FF;cursor: pointer;" (click)="toggleRegister()">Login</p>
-      }
-    </div>
+
+        <button #loginButton class="btn btn-primary" (keydown.enter)="login()" (click)="login()">   <ng-container *ngIf="!loading; else loadingTemplate">Continue</ng-container>
+          <ng-template #loadingTemplate>
+            <i class="pi pi-spin pi-spinner"></i>
+          </ng-template></button>
+      </div>
+      <p>Não possui uma conta?</p>
+      <p style="color: #0022FF;cursor: pointer;" (click)="toggleRegister()">Registre-se</p>
+    }
+    @else {
+      <p style="color: white; font-weight: 500; font-size: 30px;">Bem Vindo!</p>
+      <div class="form-group" style="color:white">
+        <div class="input-container">
+          <input id="full_name" placeholder=" " [(ngModel)]="full_name" type="text" class="form-control" (keydown.enter)="signUp()" style="font-size: 16px;">
+          <label for="full_name">Nome completo*</label>
+        </div>
+
+        <div class="input-container">
+          <input id="email" placeholder=" " [(ngModel)]="email" type="email" class="form-control" (keydown.enter)="signUp()" style="font-size: 16px;">
+          <label for="email">Email*</label>
+        </div>
+
+        <div class="input-container">
+          <input id="password" [(ngModel)]="password" placeholder=" " type="password" class="form-control" (keydown.enter)="signUp()" style="font-size: 16px;">
+          <label for="password">Senha*</label>
+        </div>
+
+        <button class="btn btn-primary" (click)="signUp()">Registrar</button>
+      </div>
+      <p>Já possui uma conta?</p>
+      <p style="color: #0022FF;cursor: pointer;" (click)="toggleRegister()">Login</p>
+    }
+  </div>
 </div>
 <div class="toast-container"></div>
