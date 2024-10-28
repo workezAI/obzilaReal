@@ -10,7 +10,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 @Component({
   selector: 'app-login-formulario',
   standalone: true,
-  imports: [FormsModule, ButtonModule, NgIf,CheckboxModule],
+  imports: [FormsModule, ButtonModule, NgIf, CheckboxModule],
   templateUrl: './login-formulario.component.html',
   styleUrls: ['./login-formulario.component.scss']
 })
@@ -42,7 +42,8 @@ export class LoginFormularioComponent implements OnInit {
   async login() {
     this.loading = true;
     try {
-      const data = await this.authService.login(this.email, this.password);
+      const expirationTime = this.rememberMe ? 60 * 60 * 24 * 30 : 60 * 60; // 1 mês ou 1 hora
+      const data = await this.authService.login(this.email, this.password, expirationTime);
       if (data) {
         console.log('Login bem-sucedido:');
         setTimeout(() => {

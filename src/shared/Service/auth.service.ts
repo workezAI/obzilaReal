@@ -42,7 +42,7 @@ export class AuthService {
   constructor(private toastr: ToastrService) {}
 
   // Método de login
-  async login(email: string, password: string): Promise<{ message: string; token: string; user: User } | null> {
+  async login(email: string, password: string, expirationTime?: number): Promise<{ message: string; token: string; user: User } | null> {
     try {
       const { data: user, error: userError } = await supabase
         .from('users')
@@ -98,7 +98,7 @@ export class AuthService {
       }
 
       // Gerar token localmente após login bem-sucedido
-      const token = this.generateToken(user);
+      const token = this.generateToken(user, expirationTime);
 
       // Armazenar o token e o email do usuário no localStorage
       localStorage.setItem('authToken', token);
@@ -219,8 +219,8 @@ export class AuthService {
   }
 
   // Método para gerar um token JWT localmente (simulado)
-  generateToken(user: User): string {
-    const exp = Math.floor(Date.now() / 1000) + 60 * 60; // Expiração em 1 hora
+  generateToken(user: User, expirationTime?: number): string {
+    const exp = Math.floor(Date.now() / 1000) + (expirationTime || 60 * 60); // Expiração padrão em 1 hora ou personalizada
     const payload = { id: user.id, email: user.email, exp };
     const token = btoa(JSON.stringify(payload));
     return token;
