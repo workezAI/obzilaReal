@@ -15,6 +15,10 @@
           <label for="password">Senha*</label>
         </div>
 
+        <div class="input-container">
+          <p-checkbox [(ngModel)]="rememberMe" binary="true" label="Manter conectado" class="custom-checkbox"></p-checkbox>
+        </div>
+
         <button #loginButton class="btn btn-primary" (keydown.enter)="login()" (click)="login()">   <ng-container *ngIf="!loading; else loadingTemplate">Continue</ng-container>
           <ng-template #loadingTemplate>
             <i class="pi pi-spin pi-spinner"></i>

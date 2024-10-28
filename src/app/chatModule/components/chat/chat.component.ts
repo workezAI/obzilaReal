@@ -96,8 +96,7 @@ export class ChatComponent implements OnInit {
   onEnter(event: KeyboardEvent) {
     if (event.key === 'Enter' && this.canSendMessage && !event.shiftKey) {
       event.preventDefault();  // Previne a quebra de linha
-      const sendButton = document.getElementById('sendButton') as HTMLElement;
-      sendButton.click(); // Simula o clique no botão de envio
+      this.sendMessage(); // Chama o método de envio de mensagem
     }
   }
 
@@ -172,7 +171,7 @@ export class ChatComponent implements OnInit {
 
       let botText = this.getBotResponseText(data);
       this.aiResponses.push(botText);
-      this.appendMessage('bot', botText);
+      this.appendMessageGradually('bot', this.stripHtmlTags(botText));
 
       // Atualiza o ai_mode com base na resposta do servidor
       if (data.obizillaSettings && data.obizillaSettings.ai_mode) {
@@ -246,6 +245,53 @@ export class ChatComponent implements OnInit {
 
     // Garante que o chat seja rolado para o final após adicionar a nova mensagem
     this.scrollToBottom(chatArea);
+  }
+
+  // Método para exibir mensagem do bot gradualmente
+  appendMessageGradually(sender: 'bot', text: string) {
+    const chatArea = document.getElementById('chatArea');
+    let messageDiv = document.createElement('div');
+
+    // Mensagem do bot dentro do chatArea
+    messageDiv.classList.add('bot-message');
+    messageDiv.style.cssText = `
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      align-items: center;
+      border: 1px solid #394AA3;
+      padding: 20px 20px 20px 30px;
+      border-radius: 21px 21px 0 0;
+      border-bottom: none;
+      justify-content: flex-start;
+    `;
+    messageDiv.innerHTML = `
+      <img src="../../../../assets/icons/obizilla favicon 1.png" alt="Mascote" class="mascote">
+      <div class="text"></div>
+    `;
+    chatArea?.appendChild(messageDiv); // Adiciona a mensagem do bot dentro do chatArea
+
+    const textElement = messageDiv.querySelector('.text') as HTMLElement;
+    let index = 0;
+
+    const interval = setInterval(() => {
+      if (index < text.length) {
+        textElement.innerHTML += text.charAt(index);
+        index++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 20); // Ajuste o intervalo conforme necessário para a velocidade de digitação
+
+    // Garante que o chat seja rolado para o final após adicionar a nova mensagem
+    this.scrollToBottom(chatArea);
+  }
+
+  // Função para remover tags HTML de uma string
+  stripHtmlTags(text: string): string {
+    const div = document.createElement('div');
+    div.innerHTML = text;
+    return div.textContent || div.innerText || '';
   }
 
   // Adiciona um loader com imagem e três pontinhos pulando

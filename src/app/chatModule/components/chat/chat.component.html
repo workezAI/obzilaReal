@@ -16,8 +16,16 @@
     <textarea id="userInput" placeholder="Digite aqui..." rows="1" (keydown)="onEnter($event)"></textarea>
 
     <!-- Ícone de envio usando uma imagem -->
-    <img class="imgs" id="sendButton" src="../../../../assets/icons/pra-cima (2).png" (click)="sendMessage()" style="font-size: 2rem; cursor: pointer;" alt="">
+    <svg (click)="sendMessage()"
+      id="sendButton"
+      width="14"
+      height="13"
+      viewBox="0 0 14 13"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M0.729248 12.7181L13.7292 6.71814L0.729248 0.71814L0.729248 5.33352L9.39592 6.71814L0.729248 8.10276L0.729248 12.7181Z"
+        fill="white" />
+    </svg>
   </div>
 </div>
-
-

@@ -5,11 +5,12 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ButtonModule } from 'primeng/button';
 import { NgIf } from '@angular/common';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @Component({
   selector: 'app-login-formulario',
   standalone: true,
-  imports: [FormsModule, ButtonModule, NgIf],
+  imports: [FormsModule, ButtonModule, NgIf,CheckboxModule],
   templateUrl: './login-formulario.component.html',
   styleUrls: ['./login-formulario.component.scss']
 })
@@ -19,6 +20,7 @@ export class LoginFormularioComponent implements OnInit {
   register: boolean = false;
   full_name: string = '';
   loading: boolean = false;
+  rememberMe: boolean = false; // Adiciona a propriedade rememberMe
 
   @ViewChild('loginButton', { static: false }) loginButton!: ElementRef;
 

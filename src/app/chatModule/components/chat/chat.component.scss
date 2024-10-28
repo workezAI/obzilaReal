@@ -75,7 +75,7 @@ body {
 
 .user-message .text,
 .bot-response .text {
-  background-color: #252525;
+  background-color: #000000;
   line-height: 25px;
   color: white;
   padding: 10px;
@@ -87,22 +87,29 @@ body {
 
 /* Estilo do input fixo ao final */
 .input-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    position: relative;
-    width: 100%;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 1px;
+  margin: 0px 10px 16px 10px;
+  border-radius: 24px;
+  background: linear-gradient(0deg, rgba(46, 46, 46, 1) 0%, rgba(65, 65, 65, 1) 100%);
+  width: calc(100% - 20px);
+  box-sizing: border-box;
+
 }
 
 .input-container {
-  width: 96%;
+  cursor: text;
+  width: 100%;
   display: flex;
   align-items: center;
   gap: 10px;
-  background-color: #333;
-  border-radius: 8px;
-  padding: 15px;
+  background-color: #080808;
+  padding: 14px;
+  border-radius: 24px;
 }
 
 textarea {
