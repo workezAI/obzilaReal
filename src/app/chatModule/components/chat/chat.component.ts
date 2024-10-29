@@ -207,12 +207,19 @@ export class ChatComponent implements OnInit {
       // Mensagem do usuário dentro do chatArea
       messageDiv.classList.add('user-message');
       messageDiv.innerHTML = `
-        <i class="pi pi-user icon" style="font-size: 24px; color: white; padding: 10px;"></i>
+      <style>
+      .user-message{
+      width: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      }
+      </style>
         <div class="text" style="
-          background-color: #252525;
-          color: white;
-          padding: 10px;
-          border-radius: 8px;
+          background-color: white;
+          color: black;
+          padding: 12px 15px;
+          border-radius: 999px;
           max-width: 70%;
           word-wrap: break-word;
           white-space: pre-wrap;
@@ -226,7 +233,7 @@ export class ChatComponent implements OnInit {
       messageDiv.style.cssText = `
         display: flex;
         flex-direction: column;
-        width: 100%;
+        width: 50%;
         align-items: center;
         border: 1px solid #394AA3;
         padding: 20px 20px 20px 30px;
@@ -257,7 +264,7 @@ export class ChatComponent implements OnInit {
     messageDiv.style.cssText = `
       display: flex;
       flex-direction: column;
-      width: 100%;
+      width: 50%;
       align-items: center;
       border: 1px solid #394AA3;
       padding: 20px 20px 20px 30px;
@@ -303,7 +310,7 @@ export class ChatComponent implements OnInit {
     loadingDiv.style.cssText = `
       display: flex;
       flex-direction: column;
-      width: 100%;
+      width: 50%;
       align-items: center;
       border: 1px solid #394AA3;
       padding: 20px 20px 20px 30px;
