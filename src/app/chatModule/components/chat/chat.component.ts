@@ -226,6 +226,11 @@ export class ChatComponent implements OnInit {
           display: inline-block;
         ">${text}</div>
       `;
+      const mediaQuery = window.matchMedia("(max-width: 800px)");
+if (mediaQuery.matches) {
+  messageDiv.style.width = "100%";
+}
+
       chatArea?.appendChild(messageDiv); // Adiciona a mensagem do usuário dentro do chatArea
     } else {
       // Mensagem do bot dentro do chatArea
@@ -241,6 +246,10 @@ export class ChatComponent implements OnInit {
         border-bottom: none;
         justify-content: flex-start;
       `;
+      const mediaQuery = window.matchMedia("(max-width: 800px)");
+if (mediaQuery.matches) {
+  messageDiv.style.width = "100%";
+}
       messageDiv.innerHTML = `
         <img src="../../../../assets/icons/obizilla favicon 1.png" alt="Mascote" class="mascote">
         <div class="text">
@@ -272,6 +281,10 @@ export class ChatComponent implements OnInit {
       border-bottom: none;
       justify-content: flex-start;
     `;
+    const mediaQuery = window.matchMedia("(max-width: 800px)");
+if (mediaQuery.matches) {
+  messageDiv.style.width = "100%";
+}
     messageDiv.innerHTML = `
       <img src="../../../../assets/icons/obizilla favicon 1.png" alt="Mascote" class="mascote">
       <div class="text"></div>
@@ -318,6 +331,10 @@ export class ChatComponent implements OnInit {
       border-bottom: none;
       justify-content: flex-start;
     `;
+    const mediaQuery = window.matchMedia("(max-width: 800px)");
+if (mediaQuery.matches) {
+  loadingDiv.style.width = "100%";
+}
 
     loadingDiv.innerHTML = `
       <style>
